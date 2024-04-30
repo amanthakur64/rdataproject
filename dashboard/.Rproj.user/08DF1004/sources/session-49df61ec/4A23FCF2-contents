@@ -1,0 +1,11 @@
+install.packages(c('flexdashboard',
+                   'plotly',
+                   'ggplot2',
+                   'vembedr',
+                   'htmltools',
+                 'tidyverse',
+                 'highcharter',
+                 'gt',
+                 'htmltools',
+                 'viridis'))
+

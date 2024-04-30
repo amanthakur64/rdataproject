@@ -1,0 +1,7 @@
+"0","library(htmltools)"
+"0",""
+"0","flourish_url <- ""https://flo.uri.sh/visualisation/17749418/embed?auto=1"""
+"0",""
+"0","# Embedding the Flourish visualization using iframe"
+"0","flourish_html <- tags$iframe(src = flourish_url, width = ""100%"", height = ""100%"")"
+"0","flourish_html"

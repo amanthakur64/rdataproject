@@ -1,0 +1,30 @@
+---
+title: "Popular Books & Songs"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: yeti
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library('vembedr')
+```
+Books {data-orientation=rows}
+=======================================================================
+
+## Row 1 {data-height=100}
+
+Column {.tabset .tabset-fade data-width=650}
+-----------------------------------------------------------------------
+
+### Most Popular Authors {data-height=900}
+```{r fig.height=5}
+library(htmltools)
+
+flourish_url <- "https://flo.uri.sh/visualisation/17749418/embed?auto=1"
+
+# Embedding the Flourish visualization using iframe
+flourish_html <- tags$iframe(src = flourish_url, width = "100%", height = "100%")
+flourish_html
+```

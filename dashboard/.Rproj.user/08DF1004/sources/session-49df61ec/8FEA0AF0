@@ -1,0 +1,33 @@
+{
+    "id": "8FEA0AF0",
+    "path": "~/dashboard/dashboard_final.Rmd",
+    "project_path": "dashboard_final.Rmd",
+    "type": "r_markdown",
+    "hash": "2711365836",
+    "contents": "",
+    "dirty": false,
+    "created": 1714231955089.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "tempName": "Untitled2",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "189,65",
+        "scrollLine": "184",
+        "last_setup_crc32": "49df61ecb5988d64",
+        "rmdVisualMode": "false",
+        "rmdVisualCollapsedChunks": "",
+        "rmdVisualModeLocation": "123:0",
+        "rmdVisualWrapConfigured": "true",
+        "docOutlineVisible": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1714500942,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1714500942485,
+    "read_only": false,
+    "read_only_alternatives": []
+}

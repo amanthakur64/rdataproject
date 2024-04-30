@@ -1,0 +1,15 @@
+"0","# Calculate the average price for each year and genre"
+"0","average_prices <- aggregate(Price ~ Year + Genre, data = df, FUN = mean)"
+"0","# Create a line chart using plotly with custom color palette"
+"0","plot_ly(average_prices, x = ~Year, y = ~Price, color = ~Genre, type = ""scatter"", mode = ""lines+markers"") %>%"
+"0","  layout(xaxis = list(title = ""Year""),"
+"0","         yaxis = list(title = ""Average Price""),"
+"0","         legend = list(title = ""Genre""))"
+"2","Warning: minimal value for n is 3, returning requested palette with 3 different levels
+"
+"2","Warning: minimal value for n is 3, returning requested palette with 3 different levels
+"
+"2","Warning: minimal value for n is 3, returning requested palette with 3 different levels
+"
+"2","Warning: minimal value for n is 3, returning requested palette with 3 different levels
+"

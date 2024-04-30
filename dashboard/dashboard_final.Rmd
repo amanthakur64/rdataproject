@@ -1,0 +1,273 @@
+---
+title: "DV Mini Project"
+author: "<br>~by Aman Thakur & Luyum Pegoo"
+output: 
+  flexdashboard::flex_dashboard:
+    vertical_layout: scroll
+    theme: 
+      version: 4
+      bootswatch: cyborg
+---
+
+```{r setup, include = FALSE}
+# Importing libraries
+library(flexdashboard)
+library(plotly)
+library(ggplot2)
+library(tidyverse)
+library(highcharter)
+library(gt)
+library(htmltools)
+library(viridis)
+```
+
+```{r}
+# Importing data
+df <- read_csv("C:/Users/luyum/OneDrive/Documents/dashboard/bestsellers with categories.csv")
+
+# Removing duplicates
+df <- df %>% 
+  distinct(Name, .keep_all = TRUE) %>% 
+  rename(User_Rating = 'User Rating')
+```
+
+```{r}
+# Importing second data
+data <- read_csv("C:/Users/luyum/OneDrive/Documents/dashboard/charts.csv")
+
+data <- data %>% 
+  rename(weeks_on_board = 'weeks-on-board',
+         peak_rank = 'peak-rank') %>% 
+  select(-'last-week')
+
+# Removing duplicates and select the max value
+data1 <- data %>% 
+  group_by(song, artist) %>% 
+  summarise(weeks_on_board = max(weeks_on_board))
+
+```
+
+# Books {data-orientation="rows"}
+
+## Row 1 {data-height="10"}
+
+## Column {.tabset .tabset-fade data-width="650"}
+
+### Most Popular Authors {data-height="600"}
+
+```{r fig.height=5}
+# Colors
+custom_colors <- viridis::mako(n = 15)
+
+# Most popular authors by reviews
+df %>% 
+  group_by(Author) %>% 
+  summarise(Reviews = sum(Reviews)) %>% 
+  arrange(desc(Reviews)) %>% 
+  head(15) %>% 
+  hchart('column', hcaes(x = Author, y = Reviews,color = custom_colors)) %>%   hc_add_theme(hc_theme_google()) %>% 
+  hc_tooltip(pointFormat = '<b>Number of Reviews: </b> {point.y} <br>') %>% 
+  hc_title(text = 'Most Popular Authors from 2009 to 2019',
+           style = list(fontSize = '25px', fontWeight = 'bold')) %>% 
+  hc_subtitle(text = 'By Number of Reviews',
+              style = list(fontSize = '16px')) %>% 
+  hc_credits(enabled = TRUE, text = '')
+```
+
+### Most Popular Books {data-height="600"}
+
+```{r fig.height=5}
+# Colors
+custom_colors <- viridis::plasma(n = 15)
+
+# Most popular books by reviews
+df %>% 
+  arrange(desc(Reviews)) %>% 
+  head(15) %>% 
+  hchart('bar', hcaes(x = Name, y = Reviews, color = custom_colors)) %>% 
+  hc_add_theme(hc_theme_google()) %>% 
+  hc_tooltip(pointFormat = '<b>Number of Reviews: </b> {point.y} <br>') %>% 
+  hc_title(text = 'Most Popular Books from 2009 to 2019',
+           style = list(fontSize = '25px', fontWeight = 'bold')) %>% 
+  hc_subtitle(text = 'By Number of Reviews',
+              style = list(fontSize = '16px')) %>%
+  hc_credits(enabled = TRUE, text = '')
+```
+
+### Distribution of Reviews {data-height="600"}
+
+```{r fig.height=5}
+# Create the violin plot using plotly
+plot_ly(df, x = ~as.factor(Year), y = ~Reviews, type = 'violin', box = list(visible = TRUE), meanline = list(visible = TRUE)) %>%
+  layout(title = list(text = "Distribution of Reviews", font = list(size = 25), y = 0.96),
+         annotations = list(
+           list(
+             x = 0.5,
+             y = 0.96,
+             xref = "paper",
+             yref = "paper",
+             text = "By Year",
+             showarrow = FALSE,
+             font = list(size = 16)
+           )
+         ),
+         xaxis = list(title = "Year"),
+         yaxis = list(title = "Number of Reviews"))
+
+
+```
+
+## Row 2 {data-height="10"}
+
+## Column {data-width="350"}
+
+### Average Price by Genre Over Time {data-height="500"}
+
+```{r fig.height=5}
+# Calculate the average price for each year and genre
+average_prices <- aggregate(Price ~ Year + Genre, data = df, FUN = mean)
+# Create a line chart using plotly with custom color palette
+plot_ly(average_prices, x = ~Year, y = ~Price, color = ~Genre, type = "scatter", mode = "lines+markers") %>%
+  layout(xaxis = list(title = "Year"),
+         yaxis = list(title = "Average Price"),
+         legend = list(title = "Genre"))
+```
+
+### Genres of Bestselling Books Over Time {data-height="500"}
+
+```{r fig.height=5}
+flourish_url <- "https://flo.uri.sh/visualisation/17778543/embed?auto=1"
+
+# Embedding the Flourish visualization using iframe
+flourish_html <- tags$iframe(src = flourish_url, width = "100%", height = "100%")
+flourish_html
+```
+
+## Row 3 {data-height="10"}
+
+## Column {data-width="350"}
+
+### Authors with the Most Bestsellers {data-height="500"}
+
+```{r fig.height=5}
+flourish_url <- "https://flo.uri.sh/visualisation/17777743/embed?auto=1"
+
+# Embedding the Flourish visualization using iframe
+flourish_html <- tags$iframe(src = flourish_url, width = "100%", height = "100%")
+flourish_html
+```
+
+### User Ratings of Popular Authors{data-height="500"}
+
+```{r fig.height=5}
+flourish_url <- "https://flo.uri.sh/visualisation/17778926/embed?auto=1"
+
+# Embedding the Flourish visualization using iframe
+flourish_html <- tags$iframe(src = flourish_url, width = "100%", height = "100%")
+flourish_html
+```
+
+# Songs {data-orientation="rows"}
+
+## Row 1 {data-height="10"}
+
+## Column {data-width="650"}
+
+### Top Artists of 2021 {data-height="900"}
+
+```{r fig.height=5}
+flourish_url <- "https://flo.uri.sh/visualisation/17776650/embed?auto=1"
+
+# Embedding the Flourish visualization using iframe
+flourish_html <- tags$iframe(src = flourish_url, width = "100%", height = "100%")
+flourish_html
+```
+
+## Row 2 {data-height="10"}
+
+## Column {data-width="650"}
+
+### Weeks on Board on the Billboard "The Hot 100" {data-height="500"}
+
+```{r fig.height=5}
+data1$week_bins <- cut(data1$weeks_on_board, breaks = seq(0, 40, by = 5))
+
+frequency_counts <- data1 %>%
+  group_by(week_bins) %>%
+  summarise(sum = n())  # n() counts the number of observations in each group
+
+# Compute the cumulative percentages
+frequency_counts$fraction <- frequency_counts$sum / sum(frequency_counts$sum)
+frequency_counts$ymax <- cumsum(frequency_counts$fraction)
+frequency_counts$ymin <- c(0, head(frequency_counts$ymax, n=-1))
+frequency_counts$labelPosition <- (frequency_counts$ymax + frequency_counts$ymin) / 2
+frequency_counts$label <- paste0(frequency_counts$week_bins, " weeks\n", frequency_counts$sum, " songss\n")
+
+# Create the plot
+plot_ly(frequency_counts, type = "pie", hole = 0.6,
+        labels = ~week_bins, values = ~sum, text = ~label,
+        hoverinfo = "percent+value",
+        marker = list(colors = viridis::plasma(length(frequency_counts$sum))),
+        textposition = "inside",
+        textinfo = "text",
+        domain = list(x = c(0, 1), y = c(0, 1))) %>%
+  layout(showlegend = FALSE)
+```
+
+
+### Artists with the Most Billboard Mentions {data-height="500"}
+
+```{r fig.height=5}
+flourish_url <- "https://flo.uri.sh/visualisation/17780211/embed?auto=1"
+
+# Embedding the Flourish visualization using iframe
+flourish_html <- tags$iframe(src = flourish_url, width = "100%", height = "100%")
+flourish_html
+```
+## Row 3 {data-height="10"}
+
+## Column {data-width="350"}
+
+### Most Popular Songs on the Billboard "The Hot 100" {data-width="500" data-height="600"}
+
+```{r fig.height=5}
+# Colors
+custom_colors <- viridis::mako(n = 20)
+
+# Most popular songs by weeks on board
+data1 %>% 
+  arrange(desc(weeks_on_board)) %>% 
+  head(20) %>% 
+  hchart('lollipop', hcaes(x = song, y = weeks_on_board, color = custom_colors)) %>% 
+  hc_add_theme(hc_theme_google()) %>% 
+  hc_tooltip(pointFormat = '<b>Number of Weeks on Board: </b> {point.y} <br>') %>% 
+  hc_yAxis(title = list(text = 'Weeks on Board')) %>% 
+  hc_xAxis(title = list(text = 'Songs')) %>% 
+  hc_title(text = 'Most Popular Songs',
+           style = list(fontSize = '25px', fontWeight = 'bold')) %>% 
+  hc_subtitle(text = 'By Number of Weeks on Board',
+              style = list(fontSize = '16px')) %>% 
+  hc_credits(enabled = TRUE, text = '')
+```
+
+### Most Popular Artists on the Billboard "The Hot 100" {data-width="500" data-height="600"}
+
+```{r fig.height=5}
+# Colors
+custom_colors <- viridis::plasma(n = 10)
+
+# Most popular artists by weeks on board
+data1 %>% 
+  group_by(artist) %>% 
+  summarise(weeks_on_board = sum(weeks_on_board)) %>% 
+  arrange(desc(weeks_on_board)) %>% 
+  head(10) %>% 
+  hchart('pie', hcaes(x = artist, y = weeks_on_board, color = custom_colors)) %>% 
+  hc_add_theme(hc_theme_google()) %>% 
+  hc_tooltip(pointFormat = '<b>Number of Weeks on Board: </b> {point.y} <br>') %>% 
+  hc_title(text = 'Most Popular Artists',
+           style = list(fontSize = '25px', fontWeight = 'bold')) %>% 
+  hc_subtitle(text = 'By Number of Weeks on Board',
+              style = list(fontSize = '16px')) %>% 
+  hc_credits(enabled = TRUE, text = '')
+```
